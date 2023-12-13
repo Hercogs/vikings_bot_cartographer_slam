@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 import os
 from glob import glob
 
-package_name = 'cartographer_slam'
+package_name = 'vikings_bot_cartographer_slam'
 
 setup(
     name=package_name,
