@@ -6,6 +6,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
+from launch.conditions import IfCondition
 
 ### IMPORTANT ###
 # This launch file works only with robot in namespace "vikings_bot_1"
@@ -15,6 +16,9 @@ def generate_launch_description():
 
     use_sim_arg = DeclareLaunchArgument("use_sim", default_value="true",
         description="Use simulation clock or real time"
+    )
+    use_rviz_arg = DeclareLaunchArgument("use_rviz", default_value="true",
+        description="Use Rviz2 vor visualizing"
     )
 
     package_name = "vikings_bot_cartographer_slam"
@@ -29,6 +33,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         use_sim_arg,
+        use_rviz_arg,
         
         Node(
             package='cartographer_ros', 
@@ -63,7 +68,10 @@ def generate_launch_description():
             }],
             arguments=[
                 "-d", rviz_config_dir
-            ]
+            ],
+            condition = IfCondition(
+                LaunchConfiguration("use_rviz")
+            ),
         )
 
     ]) 
